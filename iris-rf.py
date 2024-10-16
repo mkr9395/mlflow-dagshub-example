@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pandas as pd
 
 
 
@@ -18,8 +19,8 @@ y = iris.target
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Define the parameters for the Random Forest model
-max_depth = 1
-n_estimators = 100
+max_depth = 5
+n_estimators = 200
 
 # set up a tracking server with dagshub
 
@@ -66,4 +67,17 @@ with mlflow.start_run():
     mlflow.sklearn.log_model(rf, 'random_forest_model')
     
     print('accuracy',accuracy)
+    
+    # logging the dataset in mlflow:
+    train_df = pd.DataFrame(X_train)
+    test_df = pd.DataFrame(X_test)
+    
+    train_df.loc[:,'variety'] = y_train 
+    test_df.loc[:,'variety'] = y_test 
+    
+    train_df = mlflow.data.from_pandas(train_df)
+    test_df = mlflow.data.from_pandas(test_df)
+    
+    mlflow.log_input(train_df,"train_data")
+    mlflow.log_input(test_df, "validation")
     
