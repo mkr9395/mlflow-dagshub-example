@@ -21,8 +21,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 max_depth = 1
 n_estimators = 100
 
-# set up a tracking server
+# set up a tracking server with dagshub
 
+import dagshub
+dagshub.init(repo_owner='mkr9395', repo_name='mlflow-dagshub-example', mlflow=True)
+
+
+mlflow.set_tracking_uri('https://dagshub.com/mkr9395/mlflow-dagshub-example.mlflow')
 
 # mlflow
 
