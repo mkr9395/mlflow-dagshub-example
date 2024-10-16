@@ -41,7 +41,7 @@ with mlflow.start_run():
     
     y_pred = rf.predict(X_test)
     
-    accuracy = accuracy_score(y_pred=y_pred, y_test=y_test)
+    accuracy = accuracy_score(y_test, y_pred)
     
     mlflow.log_metric('artifact',accuracy)
     mlflow.log_params({'max_depth':max_depth,'n_estimators':n_estimators})
@@ -57,6 +57,7 @@ with mlflow.start_run():
     plt.savefig('confusion_matrix.png')
     
     mlflow.log_artifact('confusion_matrix.png')
+    mlflow.set_tags({'author':'mohit', 'model':'random forest'})
     
     # log code
     mlflow.log_artifact(__file__)
